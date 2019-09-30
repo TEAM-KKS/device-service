@@ -1,1 +1,1 @@
-# device-service
+# Device Service - EdgeX
