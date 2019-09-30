@@ -1,12 +1,10 @@
-[Writable]
-LogLevel = 'INFO'
-
 [Service]
 Host = "localhost"
-Port = 4999
-ConnectRetries = 20
+Port = 49992
+ConnectRetries = 3
 Labels = []
 OpenMsg = "device simple started"
+MaxResultCount = 50000
 Timeout = 5000
 EnableAsyncReadings = true
 AsyncBufferSize = 16
@@ -14,7 +12,6 @@ AsyncBufferSize = 16
 [Registry]
 Host = "localhost"
 Port = 8500
-Type = "consul"
 CheckInterval = "10s"
 FailLimit = 3
 FailWaitTime = 10
@@ -53,22 +50,61 @@ FailWaitTime = 10
 [Logging]
 EnableRemote = false
 File = "./device-simple.log"
+Level = "DEBUG"
 
 # Pre-define Devices
 [[DeviceList]]
-  Name = "Simple-Device01"
-  Profile = "Simple-Device"
-  Description = "Example of Simple Device"
-  Labels = [ "industrial" ]
+  Name = "RandNum-Device-01"
+  Profile = "RandNum-Device"
+  Description = "Random Number Generator Device"
+  Labels = [ "random", "test" ]
   [DeviceList.Protocols]
-    [DeviceList.Protocols.other]
-      Address = "simple01"
+    [DeviceList.Protocols.Other]
+      Address = "random"
       Port = "300"
   [[DeviceList.AutoEvents]]
-    Frequency = "10s"
+    Resource = "Random"
     OnChange = false
-    Resource = "Switch"
+    Frequency = "8s"
+
+[[DeviceList]]
+  Name = "RandInt-Device-01"
+  Profile = "RandInt-Device"
+  Description = "Random Integer Number Generator Device"
+  Labels = [ "random", "test" ]
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.Other]
+      Address = "random-integer"
+      Port = "300"
   [[DeviceList.AutoEvents]]
-    Frequency = "30s"
+    Resource = "randomInteger"
     OnChange = false
-    Resource = "Image"
+    Frequency = "5s"
+
+ [[DeviceList]]
+   Name = "RandBool-Device-01"
+   Profile = "RandBool-Device"
+   Description = "Random Boolean Value Generator Device"
+   Labels = [ "random", "test" ]
+   [DeviceList.Protocols]
+     [DeviceList.Protocols.Other]
+       Address = "random-boolean"
+       Port = "300"
+   [[DeviceList.AutoEvents]]
+     Resource = "randomBoolean"
+     OnChange = false
+     Frequency = "7s"
+
+  [[DeviceList]]
+    Name = "RandFloat-Device-01"
+    Profile = "RandFloat-Device"
+    Description = "Random Float Value Generator Device"
+    Labels = [ "random", "test" ]
+    [DeviceList.Protocols]
+      [DeviceList.Protocols.Other]
+        Address = "random-float"
+        Port = "300"
+    [[DeviceList.AutoEvents]]
+      Resource = "randomFloat"
+      OnChange = false
+      Frequency = "6s"

@@ -1,0 +1,54 @@
+name: "RandBool-Device"
+manufacturer: "Dell Technologies"
+model: "1"
+labels:
+  - "random"
+  - "test"
+description: "random bool generator to simulate a device"
+
+deviceResources:
+  -
+    name: "randomBoolean"
+    description: "generated random bool"
+    properties:
+      value:
+        { type: "Bool", readWrite: "R", defaultValue: "true" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "On/Off" }
+
+deviceCommands:
+  -
+    name: "RandomBool"
+    get:
+      -
+        { operation: "get", object: "randomBoolean", parameter: "randomBoolean"}
+    set:
+      -
+        { operation: "set", object: "randomBoolean", parameter: "randomBoolean" }
+
+coreCommands:
+  -
+    name: "RandomBool"
+    get:
+      path: "/api/v1/device/{deviceId}/RandomBool"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["RandomBool"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+    put:
+      path: "/api/v1/device/{deviceId}/RandomBool"
+      parameterNames: ["RandomBool"]
+      responses:
+        -
+          code: "200"
+          description: ""
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []

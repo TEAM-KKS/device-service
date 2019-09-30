@@ -1,0 +1,54 @@
+name: "RandInt-Device"
+manufacturer: "Dell Technologies"
+model: "1"
+labels:
+  - "random"
+  - "test"
+description: "random number generator to simulate a device"
+
+deviceResources:
+  -
+    name: "randomInteger"
+    description: "generated random number"
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "true" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+deviceCommands:
+  -
+    name: "RandomInt"
+    get:
+      -
+        { operation: "get", object: "randomInteger", property: "value"}
+    set:
+      -
+        { operation: "set", object: "randomInteger" }
+
+coreCommands:
+  -
+    name: "RandomInt"
+    get:
+      path: "/api/v1/device/{deviceId}/RandomInt"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["RandomInt"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+    put:
+      path: "/api/v1/device/{deviceId}/RandomInt"
+      parameterNames: ["randomInteger"]
+      responses:
+        -
+          code: "200"
+          description: ""
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []

@@ -1,0 +1,54 @@
+name: "RandFloat-Device"
+manufacturer: "Dell Technologies"
+model: "1"
+labels:
+  - "random"
+  - "test"
+description: "random float generator to simulate a device"
+
+deviceResources:
+  -
+    name: "randomFloat"
+    description: "generated random float"
+    properties:
+    value:
+      { type: "Float32", readWrite: "R", defaultValue: "0", floatEncoding: "Base64" }
+    units:
+      { type: "String", readWrite: "R", defaultValue: "random float32 value" }
+
+deviceCommands:
+  -
+    name: "RandomFloat"
+    get:
+      -
+        { operation: "get", object: "randomFloat", property: "value"}
+    set:
+      -
+        { operation: "set", object: "randomFloat" }
+
+coreCommands:
+  -
+    name: "RandomFloat"
+    get:
+      path: "/api/v1/device/{deviceId}/RandomFloat"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["RandomFloat"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+    put:
+      path: "/api/v1/device/{deviceId}/RandomFloat"
+      parameterNames: ["randomFloat"]
+      responses:
+        -
+          code: "200"
+          description: ""
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
