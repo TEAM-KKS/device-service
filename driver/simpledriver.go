@@ -19,7 +19,6 @@ import (
 	"image"
 	"image/jpeg"
 	"image/png"
-	"math/rand"
 	"os"
 	"time"
 )
@@ -28,6 +27,7 @@ type SimpleDriver struct {
 	lc           logger.LoggingClient
 	asyncCh      chan<- *dsModels.AsyncValues
 	switchButton bool
+	deviceMap    map[string]DeviceProfile
 }
 
 func getImageBytes(imgFile string, buf *bytes.Buffer) error {
@@ -67,6 +67,15 @@ func getImageBytes(imgFile string, buf *bytes.Buffer) error {
 func (s *SimpleDriver) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsModels.AsyncValues) error {
 	s.lc = lc
 	s.asyncCh = asyncCh
+	s.deviceMap = make(map[string]DeviceProfile)
+	// Add Random Number profile
+	s.deviceMap["randomnumber"] = &RandomNumber{}
+	// Add Random Integer profile
+	s.deviceMap["randomInteger"] = &RandomInteger{}
+	// Add Random Boolean profile
+	s.deviceMap["randomBoolean"] = &RandomBool{}
+	// Add Random Float profile
+	s.deviceMap["randomFloat"] = &RandomFloat{}
 	return nil
 }
 
@@ -82,24 +91,9 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	res = make([]*dsModels.CommandValue, 1)
 	now := time.Now().UnixNano()
 
-	if reqs[0].DeviceResourceName == "randomnumber" {
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
-		res[0] = cv
-	}
-	if reqs[0].DeviceResourceName == "randomInteger" {
-		fmt.Fprintf(os.Stdout, "intintintintint\n")
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
-		res[0] = cv
-	}
-	if reqs[0].DeviceResourceName == "randomBoolean" {
-		fmt.Fprintf(os.Stdout, "boolboolboolboolbool\n")
-		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now,  bool(rand.Intn(100) % 2 == 0) )
-		res[0] = cv
-	}
-	if reqs[0].DeviceResourceName == "randomFloat" {
-		fmt.Fprintf(os.Stdout, "floatfloatfloatfloatfloat\n")
-		cv, _ := dsModels.NewFloat32Value(reqs[0].DeviceResourceName, now,  rand.Float32())
-		res[0] = cv
+	device := s.deviceMap[reqs[0].DeviceResourceName]
+	if device != nil {
+		return device.get(deviceName, protocols, reqs)
 	}
 	if reqs[0].DeviceResourceName == "SwitchButton" {
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
