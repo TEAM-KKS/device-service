@@ -1,0 +1,38 @@
+name: "LightSensor-Device"
+manufacturer: "Dell Technologies"
+model: "1"
+labels:
+  - "light-sensor"
+description: "Light Sensor device"
+
+deviceResources:
+  -
+    name: "lightsensor"
+    description: "get light sensor data"
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+deviceCommands:
+  -
+    name: "LightSensorData"
+    get:
+      -
+        { operation: "get", object: "lightsensor", property: "value"}
+
+coreCommands:
+  -
+    name: "LightSensorData"
+    get:
+      path: "/api/v1/device/{deviceId}/LightSensorData"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["LightSensorData"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []

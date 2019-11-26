@@ -108,3 +108,30 @@ Level = "DEBUG"
       Resource = "randomFloat"
       OnChange = false
       Frequency = "6s"
+  [[DeviceList]]
+      Name = "LightSensor-Device-01"
+      Profile = "LightSensor-Device"
+      Description = "get LightSensor data"
+      Labels = [ "light-sensor"]
+      [DeviceList.Protocols]
+        [DeviceList.Protocols.Other]
+          Address = "light-sensor-addr"
+          Port = "300"
+      [[DeviceList.AutoEvents]]
+        Resource = "LightSensorData"
+        OnChange = false
+        Frequency = "6s"
+
+  [[DeviceList]]
+     Name = "Led-Device-01"
+     Profile = "Led-Device"
+     Description = "LED Device"
+     Labels = [ "led" ]
+     [DeviceList.Protocols]
+       [DeviceList.Protocols.Other]
+         Address = "led-sensor-addr"
+         Port = "300"
+     [[DeviceList.AutoEvents]]
+       Resource = "states"
+       OnChange = false
+       Frequency = "3s"

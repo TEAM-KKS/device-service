@@ -76,6 +76,10 @@ func (s *SimpleDriver) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	s.deviceMap["randomBoolean"] = &RandomBool{}
 	// Add Random Float profile
 	s.deviceMap["randomFloat"] = &RandomFloat{}
+	// Add LightSensor profile
+	s.deviceMap["lightsensor"] = &LightSensor{}
+	// Add LED profile
+	s.deviceMap["states"] = &Led{}
 	return nil
 }
 
@@ -119,16 +123,20 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 func (s *SimpleDriver) HandleWriteCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest,
 	params []*dsModels.CommandValue) error {
 
-	if len(reqs) != 1 {
-		err := fmt.Errorf("SimpleDriver.HandleWriteCommands; too many command requests; only one supported")
-		return err
-	}
-	if len(params) != 1 {
-		err := fmt.Errorf("SimpleDriver.HandleWriteCommands; the number of parameter is not correct; only one supported")
-		return err
-	}
+	//if len(reqs) != 1 {
+	//	err := fmt.Errorf("SimpleDriver.HandleWriteCommands; too many command requests; only one supported")
+	//	return err
+	//}
+	//if len(params) != 1 {
+	//	err := fmt.Errorf("SimpleDriver.HandleWriteCommands; the number of parameter is not correct; only one supported")
+	//	return err
+	//}
 
 	s.lc.Debug(fmt.Sprintf("SimpleDriver.HandleWriteCommands: protocols: %v, resource: %v, parameters: %v", protocols, reqs[0].DeviceResourceName, params))
+	device := s.deviceMap[reqs[0].DeviceResourceName]
+	if device != nil {
+		return device.set(deviceName, protocols, reqs, params)
+	}
 	var err error
 	if s.switchButton, err = params[0].BoolValue(); err != nil {
 		err := fmt.Errorf("SimpleDriver.HandleWriteCommands; the data type of parameter should be Boolean, parameter: %s", params[0].String())
