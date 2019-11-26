@@ -14,8 +14,11 @@ GIT_SHA=$(shell git rev-parse HEAD)
 build: $(MICROSERVICES)
 	$(GO) install -tags=safe
 
+build-rasp: 
+	OOS=linux GOARCH=arm GOARM=5 $(GO) build $(GOFLAGS) -o $@ ./cmd/device-service 
+	
 cmd/device-service/device-service:
-	$(GO) build $(GOFLAGS) -o $@ ./cmd/device-service
+	OOS=linux GOARCH=arm GOARM=5 $(GO) build $(GOFLAGS) -o $@ ./cmd/device-service
 
 docker:
 	docker build \

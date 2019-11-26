@@ -1,0 +1,70 @@
+name: "Led-Device"
+manufacturer: "Dell Technologies"
+model: "1"
+labels:
+  - "led"
+  - "pin"
+description: "LED Device"
+
+deviceResources:
+  -
+    name: "led"
+    description: "generated LED device"
+    properties:
+      value:
+        { type: "Bool", readWrite: "R", defaultValue: "true" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "On/Off" }
+  -
+    name: "pin"
+    description: "get PIN number"
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+  -
+    name: "states"
+    description: "get state of all pins"
+    properties:
+      value:
+        { type: "String", readWrite: "R", defaultValue: "" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+deviceCommands:
+  -
+    name: "SwitchLed"
+    get:
+      -
+        { operation: "get", object: "states", parameter: "states"}
+    set:
+      -
+        { operation: "set", object: "states", parameter: "states" }
+
+coreCommands:
+  -
+    name: "SwitchLed"
+    get:
+      path: "/api/v1/device/{deviceId}/SwitchLed"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["SwitchLed"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+    put:
+      path: "/api/v1/device/{deviceId}/SwitchLed"
+      parameterNames: ["states"]
+      responses:
+        -
+          code: "200"
+          description: ""
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
