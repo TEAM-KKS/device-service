@@ -22,6 +22,8 @@ var Pins map[int]bool
 
 func init() {
 	Pins = make(map[int]bool)
+	Pins[17] = false
+	setPinLow(17)
 }
 
 func (l *Led) get(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {
@@ -53,11 +55,20 @@ func (l *Led) set(deviceName string, protocols map[string]contract.ProtocolPrope
 				}
 				fmt.Println(pin)
 				Pins[pin.Addr] = pin.State
+				rpio.Close()
 			}
-			rpio.Close()
 		}
 	}
 	return nil
 }
 
+func setPinLow(pin int) {
+	led := rpio.Pin(pin)
+	err := rpio.Open()
+	if err == nil {
+		led.Output()
+		led.Low()
+		rpio.Close()
+	}
+}
 
