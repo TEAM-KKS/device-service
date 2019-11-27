@@ -132,6 +132,6 @@ Level = "DEBUG"
          Address = "led-sensor-addr"
          Port = "300"
      [[DeviceList.AutoEvents]]
-       Resource = "states"
+       Resource = "led"
        OnChange = false
        Frequency = "3s"
