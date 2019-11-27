@@ -15,32 +15,16 @@ deviceResources:
         { type: "Bool", readWrite: "R", defaultValue: "true" }
       units:
         { type: "String", readWrite: "R", defaultValue: "On/Off" }
-  -
-    name: "pin"
-    description: "get PIN number"
-    properties:
-      value:
-        { type: "INT32", readWrite: "R", defaultValue: "0" }
-      units:
-        { type: "String", readWrite: "R", defaultValue: "" }
-  -
-    name: "states"
-    description: "get state of all pins"
-    properties:
-      value:
-        { type: "String", readWrite: "R", defaultValue: "" }
-      units:
-        { type: "String", readWrite: "R", defaultValue: "" }
 
 deviceCommands:
   -
     name: "SwitchLed"
     get:
       -
-        { operation: "get", object: "states", parameter: "states"}
+        { operation: "get", object: "led", parameter: "led"}
     set:
       -
-        { operation: "set", object: "states", parameter: "states" }
+        { operation: "set", object: "led", parameter: "led" }
 
 coreCommands:
   -
@@ -59,7 +43,7 @@ coreCommands:
 
     put:
       path: "/api/v1/device/{deviceId}/SwitchLed"
-      parameterNames: ["states"]
+      parameterNames: ["led"]
       responses:
         -
           code: "200"
