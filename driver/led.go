@@ -26,23 +26,24 @@ func (l *Led) get(deviceName string, protocols map[string]contract.ProtocolPrope
 }
 
 func (l *Led) set(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest, params []*dsModels.CommandValue) error {
-	if params[0].DeviceResourceName == "led" {
-		if value, err := params[0].BoolValue(); err == nil {
-			led := rpio.Pin(pin) // pin for light sensor
-			err := rpio.Open()
-			if err == nil {
-				led.Output()
-				if value {
-					led.High()
-				} else {
-					led.Low()
-				}
-				state = value
-				rpio.Close()
+	if value, err := params[0].BoolValue(); err == nil {
+		err := rpio.Open()
+		if err == nil {
+			led := rpio.Pin(pin)
+			led.Output()
+			if value {
+				led.High()
+			} else {
+				led.Low()
 			}
+			state = value
+			rpio.Close()
+		} else {
+			return err
 		}
+	} else {
+		return err
 	}
-	return nil
 }
 
 func setPinLow(pin int) {
