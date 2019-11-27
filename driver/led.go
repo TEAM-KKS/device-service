@@ -26,7 +26,8 @@ func (l *Led) get(deviceName string, protocols map[string]contract.ProtocolPrope
 }
 
 func (l *Led) set(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest, params []*dsModels.CommandValue) error {
-	if value, err := params[0].BoolValue(); err == nil {
+	value, err := params[0].BoolValue();
+	if err == nil {
 		err := rpio.Open()
 		if err == nil {
 			led := rpio.Pin(pin)
@@ -44,6 +45,7 @@ func (l *Led) set(deviceName string, protocols map[string]contract.ProtocolPrope
 	} else {
 		return err
 	}
+	return err
 }
 
 func setPinLow(pin int) {
