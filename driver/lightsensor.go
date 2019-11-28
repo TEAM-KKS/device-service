@@ -23,8 +23,8 @@ func (r *LightSensor) get(deviceName string, protocols map[string]contract.Proto
 	count := 0
 	if err == nil {
 		pin := rpio.Pin(4) // pin for light sensor
-		pin.Low()
-		time.Sleep(time.Millisecond * 100)
+		//pin.Low()
+		//time.Sleep(time.Millisecond * 100)
 		pin.Input()
 		count = 0
 		for pin.Read() == rpio.Low && count < 50{

@@ -15,10 +15,10 @@ build: $(MICROSERVICES)
 	$(GO) install -tags=safe
 
 build-rasp: 
-	OOS=linux GOARCH=arm GOARM=5 $(GO) build $(GOFLAGS) -o $@ ./cmd/device-service 
+	GOOS=linux GOARCH=arm GOARM=5 $(GO) build $(GOFLAGS) -o $@ ./cmd/device-service 
 	
 cmd/device-service/device-service:
-	OOS=linux GOARCH=arm GOARM=5 $(GO) build $(GOFLAGS) -o $@ ./cmd/device-service
+	GOOS=linux GOARCH=arm GOARM=5 $(GO) build $(GOFLAGS) -o $@ ./cmd/device-service
 
 docker:
 	docker build \

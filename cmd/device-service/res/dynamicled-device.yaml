@@ -1,0 +1,54 @@
+name: "DynamicLed-Device"
+manufacturer: "Dell Technologies"
+model: "1"
+labels:
+  - "led"
+  - "pin"
+description: "Dynamic LED Device"
+
+deviceResources:
+  -
+    name: "states"
+    description: "get state of all pins"
+    properties:
+      value:
+        { type: "String", readWrite: "R", defaultValue: "" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+deviceCommands:
+  -
+    name: "SwitchDynamicLed"
+    get:
+      -
+        { operation: "get", object: "states", parameter: "states"}
+    set:
+      -
+        { operation: "set", object: "states", parameter: "states" }
+
+coreCommands:
+  -
+    name: "SwitchDynamicLed"
+    get:
+      path: "/api/v1/device/{deviceId}/SwitchDynamicLed"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["SwitchDynamicLed"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+    put:
+      path: "/api/v1/device/{deviceId}/SwitchDynamicLed"
+      parameterNames: ["states"]
+      responses:
+        -
+          code: "200"
+          description: ""
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []

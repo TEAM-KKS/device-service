@@ -135,3 +135,16 @@ Level = "DEBUG"
        Resource = "led"
        OnChange = false
        Frequency = "3s"
+  [[DeviceList]]
+     Name = "DynamicLed-Device-01"
+     Profile = "DynamicLed-Device"
+     Description = "LED Device"
+     Labels = [ "led" ]
+     [DeviceList.Protocols]
+       [DeviceList.Protocols.Other]
+         Address = "dynamic-led-sensor-addr"
+         Port = "300"
+     [[DeviceList.AutoEvents]]
+       Resource = "states"
+       OnChange = false
+       Frequency = "3s"

@@ -80,6 +80,8 @@ func (s *SimpleDriver) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 	s.deviceMap["lightsensor"] = &LightSensor{}
 	// Add LED profile
 	s.deviceMap["led"] = &Led{}
+	// Add DynamicLed profile
+	s.deviceMap["states"] = &DynamicLed{}
 	return nil
 }
 
